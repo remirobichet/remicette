@@ -14,7 +14,7 @@ const currentServings = ref(recipeData.servings || 4)
 
 const adjustedIngredients = computed(() => {
   const ratio = currentServings.value / recipeData.servings
-  
+
   return recipeData.ingredients?.map(ingredient => ({
     ...ingredient,
     quantity: ingredient.quantity ? ingredient.quantity * ratio : null
@@ -42,12 +42,12 @@ const formatQuantity = (quantity) => {
     <!-- En-tête de la recette -->
     <div class="mb-8">
       <h1 class="text-4xl font-bold mb-6 text-gray-900">{{ recipeData.title }}</h1>
-      <img 
-        v-if="recipeData.image" 
-        :src="recipeData.image" 
-        :alt="recipeData.title" 
+      <img
+        v-if="recipeData.image"
+        :src="recipeData.image"
+        :alt="recipeData.title"
         class="w-full h-96 object-cover rounded-xl shadow-lg"
-      />
+      >
     </div>
 
     <!-- Informations principales -->
@@ -74,19 +74,19 @@ const formatQuantity = (quantity) => {
 
     <!-- Contrôle des portions -->
     <div class="flex items-center justify-center gap-6 mb-8 p-4 bg-white border-2 border-gray-200 rounded-lg shadow-sm">
-      <button 
-        @click="decreaseServings" 
+      <button
         :disabled="currentServings <= 1"
         class="w-10 h-10 flex items-center justify-center bg-blue-600 text-white text-2xl rounded-full hover:bg-blue-700 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
+        @click="decreaseServings"
       >
         −
       </button>
       <span class="text-xl font-semibold min-w-32 text-center">
         {{ currentServings }} personne{{ currentServings > 1 ? 's' : '' }}
       </span>
-      <button 
-        @click="increaseServings"
+      <button
         class="w-10 h-10 flex items-center justify-center bg-blue-600 text-white text-2xl rounded-full hover:bg-blue-700 transition-colors"
+        @click="increaseServings"
       >
         +
       </button>
@@ -98,12 +98,15 @@ const formatQuantity = (quantity) => {
         Ingrédients
       </h2>
       <ul class="space-y-2">
-        <li 
-          v-for="(ingredient, index) in adjustedIngredients" 
+        <li
+          v-for="(ingredient, index) in adjustedIngredients"
           :key="index"
           class="p-3 bg-gray-50 border-l-4 border-blue-600 rounded"
         >
-          <span v-if="ingredient.quantity" class="font-bold text-blue-600">
+          <span
+            v-if="ingredient.quantity"
+            class="font-bold text-blue-600"
+          >
             {{ formatQuantity(ingredient.quantity) }}
             {{ ingredient.unit }}
           </span>
@@ -117,7 +120,10 @@ const formatQuantity = (quantity) => {
       <h2 class="text-3xl font-bold mb-6 text-gray-900 border-b-4 border-blue-600 pb-3">
         Instructions
       </h2>
-      <ContentRenderer :value="recipe" class="prose dark:prose-invert prose-pre:bg-gray-100 dark:prose-pre:bg-gray-900" />
+      <ContentRenderer
+        :value="recipe"
+        class="prose dark:prose-invert prose-pre:bg-gray-100 dark:prose-pre:bg-gray-900"
+      />
     </div>
   </div>
 </template>
