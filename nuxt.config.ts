@@ -6,6 +6,7 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@nuxt/eslint',
     '@nuxtjs/color-mode',
+    'shadcn-nuxt'
   ],
   app: {
     head: {
@@ -15,7 +16,10 @@ export default defineNuxtConfig({
     }
   },
 
-  css: ['assets/css/main.css'],
+  css: [
+    '~/assets/css/globals.css',
+    '~/assets/css/tailwind.css'
+  ],
   colorMode: { classSuffix: '' },
 
   content: {
@@ -37,4 +41,9 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-02-19',
 
   vite: { plugins: [tailwindcss()] },
+
+  shadcn: {
+    prefix: '',
+    componentDir: '@/components/ui'
+  }
 })
