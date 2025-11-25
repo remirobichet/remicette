@@ -38,7 +38,18 @@ const formatQuantity = (quantity) => {
 <template>
   <!-- En-tête de la recette -->
   <div class="mb-8">
-    <h1 class="text-4xl font-bold mb-6 text-gray-900">{{ recipe.title }}</h1>
+    <div class="flex gap-5 items-center mb-6">
+      <NuxtLink
+        class="cursor-pointer"
+        to="/"
+      >
+        <Icon
+          name="back"
+          size="2em"
+        />
+      </NuxtLink>
+      <h1 class="text-4xl font-bold text-gray-900">{{ recipe.title }}</h1>
+    </div>
     <img
       v-if="recipe.image"
       :src="recipe.image"

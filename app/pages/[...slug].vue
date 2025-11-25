@@ -20,12 +20,6 @@ useSeoMeta(page.value?.seo || {})
     :name="page?.layout || 'default'"
     class="bg-white dark:bg-gray-800 ring-1 ring-gray-200 dark:ring-gray-700"
   >
-    <NuxtLink
-      class="hover:shadow transition cursor-pointer"
-      to="/"
-    >
-      <h2 class="text-xl font-semibold">Home</h2>
-    </NuxtLink>
     <RecipeCard :recipe="page" />
   </NuxtLayout>
 </template>

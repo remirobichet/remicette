@@ -1,7 +1,7 @@
 ---
 title: Spaghetti à la carbonara
 description: La vraie recette italienne sans crème, avec guanciale et pecorino
-image: /images/recettes/carbonara.jpg
+image: /images/recipe/placeholder.jpg
 category: italien
 prepTime: 10
 cookTime: 15

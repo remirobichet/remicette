@@ -1,7 +1,7 @@
 ---
 title: Cookies aux pépites de chocolat
 description: Des cookies moelleux à l’intérieur et légèrement croustillants à l’extérieur
-image: /images/recettes/cookies-chocolat.jpg
+image: /images/recipe/placeholder.jpg
 category: dessert
 prepTime: 15
 cookTime: 12

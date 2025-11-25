@@ -1,7 +1,7 @@
 ---
 title: Tarte aux pommes classique
 description: Une délicieuse tarte aux pommes avec une pâte croustillante
-image: /images/recettes/tarte-aux-pommes.jpg
+image: /images/recipe/placeholder.jpg
 category: dessert
 prepTime: 30
 cookTime: 45
@@ -21,7 +21,7 @@ ingredients:
     unit: pincée
     name: sel
   - quantity: 5
-    unit: ''
+    unit: ""
     name: pommes
   - quantity: 2
     unit: cuillères à soupe

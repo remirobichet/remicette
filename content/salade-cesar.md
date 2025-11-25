@@ -1,7 +1,7 @@
 ---
 title: Salade césar classique
 description: Une salade croquante avec une sauce crémeuse maison
-image: /images/recettes/salade-cesar.jpg
+image: /images/recipe/placeholder.jpg
 category: salade
 prepTime: 20
 cookTime: 10
