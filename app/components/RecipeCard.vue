@@ -82,22 +82,26 @@ const formatQuantity = (quantity) => {
 
   <!-- Contrôle des portions -->
   <div class="flex items-center justify-center gap-6 mb-8 p-4 bg-white border-2 border-gray-200 rounded-lg shadow-sm">
-    <button
+    <Button
       :disabled="currentServings <= 1"
-      class="w-10 h-10 flex items-center justify-center bg-blue-600 text-white text-2xl rounded-full hover:bg-blue-700 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
+      variant="outline"
+      size="icon"
+      aria-label="Submit"
       @click="decreaseServings"
     >
-      −
-    </button>
+      <Icon name="previous" />
+    </Button>
     <span class="text-xl font-semibold min-w-32 text-center">
       {{ currentServings }} personne{{ currentServings > 1 ? 's' : '' }}
     </span>
-    <button
-      class="w-10 h-10 flex items-center justify-center bg-blue-600 text-white text-2xl rounded-full hover:bg-blue-700 transition-colors"
+    <Button
+      variant="outline"
+      size="icon"
+      aria-label="Submit"
       @click="increaseServings"
     >
-      +
-    </button>
+      <Icon name="next" />
+    </Button>
   </div>
 
   <!-- Liste des ingrédients -->

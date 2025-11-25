@@ -4,9 +4,10 @@ const onClick = () => (colorMode.value === 'light' ? (colorMode.preference = 'da
 </script>
 
 <template>
-  <button
+  <Button
+    variant="outline"
+    size="icon"
     aria-label="Color Mode"
-    class="inline-block w-5"
     @click="onClick"
   >
     <ColorScheme placeholder="...">
@@ -25,5 +26,5 @@ const onClick = () => (colorMode.value === 'light' ? (colorMode.preference = 'da
         <span class="sr-only">Light Mode</span>
       </template>
     </ColorScheme>
-  </button>
+  </Button>
 </template>
