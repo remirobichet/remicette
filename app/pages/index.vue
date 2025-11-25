@@ -50,7 +50,7 @@ const filteredRecipes = computed(() => {
     </div>
 
     <!-- Recipe list -->
-    <div class="grid gap-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <NuxtLink
         v-for="recipe in filteredRecipes"
         :key="recipe.id"
