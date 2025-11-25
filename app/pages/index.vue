@@ -25,7 +25,7 @@ const filteredRecipes = computed(() => {
 <template>
   <div class="relative pt-4 px-4 max-w-3xl mx-auto">
     <!-- Title -->
-    <h1 class="text-4xl font-bold mb-6 text-center">Mes Recettes</h1>
+    <h1 class="text-4xl font-bold mb-6 text-center">🧑‍🍳 Mes Recettes</h1>
 
     <!-- Filters -->
     <div class="flex flex-col sm:flex-row gap-4 mb-6 justify-center">
