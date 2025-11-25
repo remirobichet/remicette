@@ -1,10 +1,4 @@
 <script setup lang="ts">
-/**
- * Document driven is removed in Content v3.
- * This page is a simple/full-feature replacement of document driven.
- */
-import type { LayoutKey } from '#build/types/layouts'
-
 const route = useRoute()
 
 const { data: page } = await useAsyncData(`page-${route.params.slug}`, () => {
@@ -22,7 +16,16 @@ useSeoMeta(page.value?.seo || {})
 </script>
 
 <template>
-  <NuxtLayout :name="page?.layout as LayoutKey || 'default'" class="bg-white dark:bg-gray-800 ring-1 ring-gray-200 dark:ring-gray-700">
+  <NuxtLayout
+    :name="page?.layout || 'default'"
+    class="bg-white dark:bg-gray-800 ring-1 ring-gray-200 dark:ring-gray-700"
+  >
+    <NuxtLink
+      class="hover:shadow transition cursor-pointer"
+      to="/"
+    >
+      <h2 class="text-xl font-semibold">Home</h2>
+    </NuxtLink>
     <RecipeCard :recipe="page" />
   </NuxtLayout>
 </template>
