@@ -10,7 +10,7 @@ useSeoMeta({
     <NuxtLoadingIndicator />
     <NuxtPage />
     <!-- Color switch top right -->
-    <div class="absolute top-4 right-4">
+    <div class="absolute top-2 right-2">
       <ColorModeSwitch />
     </div>
   </div>
