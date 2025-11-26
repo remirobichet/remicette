@@ -16,10 +16,7 @@ useSeoMeta(page.value?.seo || {})
 </script>
 
 <template>
-  <NuxtLayout
-    :name="page?.layout || 'default'"
-    class="bg-white dark:bg-gray-800 ring-1 ring-gray-200 dark:ring-gray-700"
-  >
+  <NuxtLayout :name="page?.layout || 'default'">
     <RecipeCard :recipe="page" />
   </NuxtLayout>
 </template>
