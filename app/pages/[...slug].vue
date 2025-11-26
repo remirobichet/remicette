@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import type { ContentCollectionItem } from '@nuxt/content'
+
 const route = useRoute()
 
-const { data: page } = await useAsyncData(`page-${route.params.slug}`, () => {
+const { data: page } = await useAsyncData<ContentCollectionItem | null>(`page-${route.params.slug}`, () => {
   return queryCollection('content').path(route.path).first()
 })
 
