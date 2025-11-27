@@ -2,6 +2,9 @@
 import { ref, computed } from 'vue'
 import type { ContentCollectionItem } from '@nuxt/content'
 
+/* Hand free mode */
+import { useSpeechRecognition } from '@vueuse/core'
+
 const props = defineProps<{
   recipe: ContentCollectionItem
 }>()
@@ -35,6 +38,73 @@ const viewMode = ref<ViewMode>('normal')
 const setViewMode = (mode: ViewMode) => {
   viewMode.value = viewMode.value === mode ? 'normal' : mode
 }
+
+/* Hand free mode */
+
+const speech = useSpeechRecognition({
+  lang: 'fr',
+  continuous: true,
+})
+
+// Words the user might actually speak → internal ViewMode
+const speechToViewModeMap: Record<string, ViewMode> = {
+  'normal': 'normal',
+  'retour': 'normal',
+  'annuler': 'normal',
+  'stop': 'normal',
+  'stoppe': 'normal',
+  'ingredient': 'ingredients',
+  'ingredients': 'ingredients',
+  'ingrédient': 'ingredients',
+  'ingrédients': 'ingredients',
+  'instruction': 'instructions',
+  'instructions': 'instructions',
+  'liste': 'instructions',
+  'étape': 'instructions',
+  'étapes': 'instructions',
+  'recette': 'instructions',
+  'recettes': 'instructions',
+}
+
+const grammar = `#JSGF V1.0; grammar recipe; public <step> = ${Object.keys(speechToViewModeMap).join(' | ')} ;`
+
+function setupSpeechRecognition() {
+  if (!speech.isSupported.value) return
+
+  // @ts-expect-error browser prefixes
+  const SpeechGrammarList = window.SpeechGrammarList || window.webkitSpeechGrammarList
+  const grammarList = new SpeechGrammarList()
+  grammarList.addFromString(grammar, 1)
+
+  speech.recognition!.grammars = grammarList
+
+  watch(speech.result, (value) => {
+    const words = value.toLowerCase().split(/\s+/).reverse()
+
+    for (const w of words) {
+      const mapped = speechToViewModeMap[w]
+      if (mapped) {
+        viewMode.value = mapped
+        if (w === 'stop' || w === 'stoppe') {
+          stopSpeech()
+        }
+        break
+      }
+    }
+  })
+}
+
+setupSpeechRecognition()
+
+function startSpeech() {
+  speech.result.value = ''
+  speech.start()
+}
+
+
+
+const { isListening: isSpeechListening, isSupported: isSpeechSupported, stop: stopSpeech } = speech
+
 </script>
 
 <template>
@@ -209,9 +279,21 @@ const setViewMode = (mode: ViewMode) => {
         name="list-todo"
       />
     </Button>
-
-    <Button variant="outline">
+    <Button
+      v-if="!isSpeechListening"
+      variant="outline"
+      :disabled="!isSpeechSupported"
+      @click="startSpeech"
+    >
       Hands-free
+    </Button>
+    <Button
+      v-else
+      variant="outline"
+      :disabled="!isSpeechSupported"
+      @click="stopSpeech"
+    >
+      Stop
     </Button>
   </div>
 
