@@ -46,7 +46,9 @@ const speech = useSpeechRecognition({
   continuous: true,
 })
 
-// Words the user might actually speak → internal ViewMode
+const shouldKeepListening = ref(false)
+
+// User → ViewMode mapping
 const speechToViewModeMap: Record<string, ViewMode> = {
   'normal': 'normal',
   'retour': 'normal',
@@ -85,25 +87,40 @@ function setupSpeechRecognition() {
       const mapped = speechToViewModeMap[w]
       if (mapped) {
         viewMode.value = mapped
+
+        // Stop speech if user says stop
         if (w === 'stop' || w === 'stoppe') {
+          shouldKeepListening.value = false
           stopSpeech()
         }
+
         break
       }
     }
   })
+
+  speech.recognition!.onend = () => {
+    // If we are in hands-free mode, auto restart
+    if (shouldKeepListening.value) {
+      speech.start()
+    }
+  }
 }
 
 setupSpeechRecognition()
 
 function startSpeech() {
   speech.result.value = ''
+  shouldKeepListening.value = true   // activate auto-restart mode
   speech.start()
 }
 
+const { isListening: isSpeechListening, isSupported: isSpeechSupported, stop: _stopSpeech } = speech
 
-
-const { isListening: isSpeechListening, isSupported: isSpeechSupported, stop: stopSpeech } = speech
+function stopSpeech() {
+  shouldKeepListening.value = false   // disable auto-restart
+  _stopSpeech()
+}
 
 </script>
 
