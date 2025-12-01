@@ -18,11 +18,7 @@ async function handleSubmit() {
 
   loading.value = true
   try {
-    // Example: call your future backend route
-    // const res = await $fetch('/api/extract', { method: 'POST', body: { url: url.value } })
-
-    await new Promise((r) => setTimeout(r, 1000)) // simulate
-
+    await $fetch('/api/extract', { method: 'POST', body: { url: url.value } })
     success.value = "URL soumise avec succès ! (simulation)"
   } catch (e) {
     console.error(e)
