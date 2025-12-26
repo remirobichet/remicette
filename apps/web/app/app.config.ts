@@ -8,6 +8,7 @@ export default defineAppConfig({
       'dark-mode': 'lucide-moon',
       'light-mode': 'lucide-sun',
       'list-todo': 'lucide-list-todo',
+      'loader': 'lucide-loader',
       'minus': 'lucide-minus',
       'next': 'lucide-chevron-right',
       'plus': 'lucide-plus',
