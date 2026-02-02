@@ -42,6 +42,12 @@ export default defineNuxtConfig({
   },
   compatibilityDate: '2025-02-19',
 
+  runtimeConfig: {
+    public: {
+      apiUrl: process.env.VITE_API_URL
+    }
+  },
+
   vite: { plugins: [tailwindcss()] },
 
   shadcn: {

@@ -9,6 +9,7 @@ export default defineAppConfig({
       'light-mode': 'lucide-sun',
       'list-todo': 'lucide-list-todo',
       'loader': 'lucide-loader',
+      'menu': 'lucide-ellipsis-vertical',
       'minus': 'lucide-minus',
       'next': 'lucide-chevron-right',
       'plus': 'lucide-plus',
