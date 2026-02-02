@@ -1,8 +1,10 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JSDOM } from 'jsdom';
+import { execFile } from 'node:child_process';
 import { promises as fs } from 'fs';
 import { join } from 'path';
+import { promisify } from 'node:util';
 import Replicate from 'replicate';
 
 type Ingredient = {
@@ -23,6 +25,8 @@ type Recipe = {
   ingredients: Ingredient[];
   body: string;
 };
+
+const execFileAsync = promisify(execFile);
 
 @Injectable()
 export class RecipesService {
@@ -47,6 +51,7 @@ export class RecipesService {
 
       // 4️⃣ Save markdown
       const saved = await this.saveMarkdown(md, recipe.title);
+      await this.commitAndPushRecipe(saved.filePath, recipe.title);
 
       return { success: true, ...saved, recipe };
     } catch (err: any) {
@@ -339,5 +344,80 @@ ${input}
     );
     await fs.writeFile(filePath, markdown, 'utf8');
     return { slug, filePath };
+  }
+
+  private async commitAndPushRecipe(filePath: string, title: string) {
+    const repoRoot = process.env.REPO_ROOT;
+    if (!repoRoot) {
+      return;
+    }
+
+    const autoCommit = process.env.RECIPE_GIT_AUTO_COMMIT === 'true';
+    if (!autoCommit) {
+      return;
+    }
+
+    const lockPath = join(repoRoot, '.git', 'recipe-commit.lock');
+    let lockHandle: fs.FileHandle | null = null;
+
+    try {
+      lockHandle = await fs.open(lockPath, 'wx');
+      await execFileAsync('git', [
+        '-C',
+        repoRoot,
+        'rev-parse',
+        '--is-inside-work-tree',
+      ]);
+
+      await execFileAsync('git', ['-C', repoRoot, 'add', filePath]);
+
+      const status = await execFileAsync('git', [
+        '-C',
+        repoRoot,
+        'status',
+        '--porcelain',
+      ]);
+
+      const statusOutput = String(status.stdout ?? '');
+
+      if (!statusOutput.trim()) {
+        return;
+      }
+
+      const safeTitle = title
+        ? title.replace(/\s+/g, ' ').trim()
+        : 'Untitled recipe';
+      const message = `chore: 🤖 add recipe: ${safeTitle}`;
+
+      await execFileAsync('git', ['-C', repoRoot, 'commit', '-m', message], {
+        env: {
+          ...process.env,
+          GIT_AUTHOR_NAME: process.env.GIT_AUTHOR_NAME,
+          GIT_AUTHOR_EMAIL: process.env.GIT_AUTHOR_EMAIL,
+          GIT_COMMITTER_NAME: process.env.GIT_COMMITTER_NAME,
+          GIT_COMMITTER_EMAIL: process.env.GIT_COMMITTER_EMAIL,
+          GIT_SSH_COMMAND: process.env.GIT_SSH_COMMAND,
+        },
+      });
+
+      await execFileAsync('git', ['-C', repoRoot, 'push'], {
+        env: {
+          ...process.env,
+          GIT_SSH_COMMAND: process.env.GIT_SSH_COMMAND,
+        },
+      });
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : 'Unknown git error';
+      throw new HttpException(
+        `⚠️ Failed to push recipe to git: ${message}`,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    } finally {
+      if (lockHandle) {
+        await lockHandle.close();
+        await fs.unlink(lockPath).catch(() => undefined);
+      }
+    }
   }
 }

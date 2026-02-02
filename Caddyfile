@@ -1,0 +1,7 @@
+remicette.remirobichet.fr {
+  reverse_proxy web:3000
+}
+
+api.remicette.remirobichet.fr {
+  reverse_proxy api:3000
+}

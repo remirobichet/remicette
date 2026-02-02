@@ -1,0 +1,56 @@
+services:
+  caddy:
+    image: caddy:2.8.4
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - web
+      - api
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      NITRO_HOST: 0.0.0.0
+      PORT: 3000
+      VITE_API_URL: https://api.remicette.remirobichet.fr
+    volumes:
+      - /srv/remicette/apps/web/content:/app/apps/web/content
+    expose:
+      - "3000"
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      FRONTEND_URL: https://remicette.remirobichet.fr
+      REPO_ROOT: /repo
+      RECIPE_GIT_AUTO_COMMIT: "true"
+      GIT_AUTHOR_NAME: Remicette Bot
+      GIT_AUTHOR_EMAIL: bot@remicette.remirobichet.fr
+      GIT_COMMITTER_NAME: Remicette Bot
+      GIT_COMMITTER_EMAIL: bot@remicette.remirobichet.fr
+      GIT_SSH_COMMAND: ssh -i /keys/github_deploy -o StrictHostKeyChecking=accept-new
+      REPLICATE_API_TOKEN: ${REPLICATE_API_TOKEN}
+    volumes:
+      - /srv/remicette:/repo
+      - ./deploy-keys/github_deploy:/keys/github_deploy:ro
+    expose:
+      - "3000"
+
+volumes:
+  caddy_data:
+  caddy_config:
