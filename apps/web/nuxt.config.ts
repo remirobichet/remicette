@@ -1,7 +1,11 @@
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineNuxtConfig({
-  ssr: false,
+  ssr: true,
+
+  nitro: {
+    preset: "node-server",
+  },
 
   modules: [
     "@nuxt/content",
@@ -26,7 +30,7 @@ export default defineNuxtConfig({
   colorMode: { classSuffix: "" },
 
   content: {
-    experimental: { nativeSqlite: true },
+    experimental: { sqliteConnector: "native" },
     build: {
       markdown: {
         highlight: {
