@@ -30,7 +30,7 @@ export default defineNuxtConfig({
   colorMode: { classSuffix: "" },
 
   content: {
-    experimental: { sqliteConnector: "better-sqlite3" },
+    experimental: { sqliteConnector: "native" },
     build: {
       markdown: {
         highlight: {
