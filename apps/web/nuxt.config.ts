@@ -3,6 +3,10 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineNuxtConfig({
   ssr: true,
 
+  nitro: {
+    preset: "node-server",
+  },
+
   modules: [
     "@nuxt/content",
     "@nuxt/icon",
