@@ -7,8 +7,9 @@
   "license": "MIT",
   "scripts": {
     "dev": "nuxi dev",
+    "prebuild": "nuxi prepare",
     "build": "nuxi build",
-    "generate": "nuxi prepare && nuxi generate",
+    "generate": "nuxi generate",
     "preview": "nuxi preview",
     "lint": "eslint ."
   },
