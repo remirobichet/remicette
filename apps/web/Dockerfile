@@ -1,12 +1,8 @@
-FROM node:22-bullseye
+FROM node:22-bullseye-slim
 
 WORKDIR /app
 
 RUN corepack enable
-
-RUN apt-get update \
-  && apt-get install -y --no-install-recommends python3 make g++ \
-  && rm -rf /var/lib/apt/lists/*
 
 COPY . /app
 
