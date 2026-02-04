@@ -22,7 +22,7 @@ services:
       NODE_ENV: production
       NITRO_HOST: 0.0.0.0
       PORT: 3000
-      VITE_API_URL: https://api.remicette.remirobichet.fr
+      NUXT_PUBLIC_API_URL: https://api.remicette.remirobichet.fr
     volumes:
       - /srv/remicette/apps/web/content:/app/apps/web/content
     expose:
