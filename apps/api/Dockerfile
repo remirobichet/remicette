@@ -18,4 +18,4 @@ ENV PORT=3000
 
 WORKDIR /app/apps/api
 
-CMD ["node", "dist/main"]
+CMD ["sh", "-c", "git config --global --add safe.directory /repo && node dist/main"]
